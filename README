@@ -1,1 +1,7 @@
-not much yet
+Usage:
+
+    cp pertbot-load.el my-pertbot-load.el
+    edit my-pertbot-load.el # set username, password, server, channel
+    emacs -q -l my-pertbot-load.el
+
+You could also run emacs in a screen session, or as a daemon.
