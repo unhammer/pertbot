@@ -1,5 +1,3 @@
-(add-to-list 'load-path "~/pertbot")
-
 (require 'iso-639)
 
 (setq erc-keywords '(",iso"))
@@ -22,4 +20,7 @@
 	;; ((eq match-type 'current-nick) (erc-send-message "hi there"))
 	))
 
+
 (add-hook 'erc-text-matched-hook 'pertbot-handle-match)
+
+(provide 'pertbot)
