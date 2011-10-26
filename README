@@ -1,6 +1,6 @@
 Usage:
 
-    cp pertbot-load.el my-pertbot-load.el
+    cp pertbot-load-example.el my-pertbot-load.el
     edit my-pertbot-load.el # set username, password, server, channel
     emacs -q -l my-pertbot-load.el
 
