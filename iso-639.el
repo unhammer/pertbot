@@ -676,6 +676,8 @@
     ("kxy" . "Kayong")
     ("chv" . "Chuvash")
     ("zh" . "Chinese")
+    ("zh_TW" . "Chinese (Traditional)")
+    ("zh_CN" . "Chinese (Simplified)")
     ("kxz" . "Kerewo")
     ("chw" . "Chuwabu")
     ("chx" . "Chantyal")

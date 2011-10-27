@@ -1,6 +1,7 @@
 (require 'iso-639)
+(require 'pertbot-apertium-pairs)
 
-(setq erc-keywords '("iso" "help" "commands"))
+(setq erc-keywords '("iso" "help" "commands" "pairs"))
 
 (defun pertbot-handle-help (msg)
   (erc-send-message "I've just been born so I don't know many commands. Try ,commands for a full list."))
@@ -32,10 +33,15 @@
 		 ((equal key "help") (pertbot-handle-help msg))
 		 ((equal key "commands") (pertbot-handle-commands msg))
 		 (simple-answer
-		  (erc-send-message (cdr simple-answer))))))
+		  (erc-send-message (cdr simple-answer)))
+		 ((equal key "pairs") (pertbot-handle-pairs msg)))))
 	;; guess this matches even if its us saying something :-/
 	;; ((eq match-type 'current-nick) (erc-send-message "hi there"))
 	))
+(add-hook 'erc-text-matched-hook 'pertbot-handle-match)
+
+
+  
 
 (defvar pertbot-simple-answers
   '(("hi" . "Hello there"))
@@ -44,7 +50,5 @@
 ;; User should define pertbot-simple-answers before requiring this:
 (mapc (lambda (key) (add-to-list 'erc-keywords key))
       (mapcar #'car pertbot-simple-answers))
-
-(add-hook 'erc-text-matched-hook 'pertbot-handle-match)
 
 (provide 'pertbot)
