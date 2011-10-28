@@ -16,7 +16,7 @@
 
 (defun pertbot-handle-iso (msg)
   (if (string-match "^\\Sw*,iso\\Sw+\\(...?\\)\\Sw*\n" msg)
-      (let* ((code (match-string 1 msg))
+      (let* ((code (match-string-no-properties 1 msg))
 	     (lang (assoc code iso-639-language-codes))
 	     (reply (if lang
 			(format "ISO language code \"%s\" is %s" code (cdr lang))
@@ -28,7 +28,7 @@
 (defun pertbot-handle-match (match-type nickuserhost msg)
   (cond ((eq match-type 'keyword)
 	 (string-match "^\\Sw*,\\Sw*\\(\\sw+\\)" msg)
-	 (let* ((key (downcase (match-string 1 msg)))
+	 (let* ((key (downcase (match-string-no-properties 1 msg)))
 		(simple-answer (assoc key pertbot-simple-answers)))
 	   (cond ((equal key "iso") (pertbot-handle-iso msg))
 		 ;; TODO: use the method in `pcomplete-erc-commands'

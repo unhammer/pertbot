@@ -29,7 +29,7 @@
 	  (remove
 	   nil
 	   (mapcar (lambda (l) (when (string-match "\\(.*\\)-\\(.*\\)" l)
-				 (concat (match-string 2 l) "-" (match-string 1 l))))
+				 (concat (match-string-no-properties 2 l) "-" (match-string-no-properties 1 l))))
 		   (pertbot-lang-pairs))))))
 
 (defvar pertbot-lang-codes-cached nil)
@@ -39,7 +39,7 @@
     (setq pertbot-lang-codes-cached
 	  (apply #'append
 		 (mapcar (lambda (l) (when (string-match "\\(.*\\)-\\(.*\\)" l)
-				       (list (match-string 2 l) (match-string 1 l))))
+				       (list (match-string-no-properties 2 l) (match-string-no-properties 1 l))))
 			 (pertbot-lang-pairs))))))
 
 
@@ -57,10 +57,10 @@ means e.g. \"nob\" and \"nb\" will be treated the same."
      (lambda (pair)
        (when (string-match "\\(.*\\)-\\(.*\\)" pair)
 	 (let ((basename (concat "apertium-" pair))
-	       (iso1 (or (cdr (assoc (match-string 1 pair) iso-639-language-codes))
-			 (match-string 1 pair)))
-	       (iso2 (or (cdr (assoc (match-string 2 pair) iso-639-language-codes))
-			 (match-string 2 pair))))
+	       (iso1 (or (cdr (assoc (match-string-no-properties 1 pair) iso-639-language-codes))
+			 (match-string-no-properties 1 pair)))
+	       (iso2 (or (cdr (assoc (match-string-no-properties 2 pair) iso-639-language-codes))
+			 (match-string-no-properties 2 pair))))
 	   (puthash iso1
 		    (cons basename (gethash iso1 pertbot-langs-pairs-cached))
 		    pertbot-langs-pairs-cached)
@@ -80,7 +80,7 @@ language."
 
 (defun pertbot-handle-pairs (msg)
   (if (string-match "^\\s *,pairs\\s +\\(\\S +*\\)\\s *\n" msg)
-      (let* ((code (match-string 1 msg))
+      (let* ((code (match-string-no-properties 1 msg))
 	     (pairs (pertbot-get-pairs-of-langcode code))
 	     (pairstr (apply #'concat (mapcar (lambda (p)
 						    (format "%s " p))

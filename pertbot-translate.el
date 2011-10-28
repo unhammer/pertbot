@@ -25,8 +25,8 @@
 
 (defun pertbot-handle-translate (msg)
   (if (string-match "^\\s *,translate\\s +\\(\\S +-\\S +*\\)\\s +\\(.*\\)\n" msg)
-      (let* ((dir (match-string 1 msg))
-	     (input (match-string 2 msg)))
+      (let* ((dir (match-string-no-properties 1 msg))
+	     (input (match-string-no-properties 2 msg)))
 	(if (member dir (pertbot-installed-dirs))
 	    (let ((output (pertbot-translate-helper dir input)))
 	      (if output
@@ -46,8 +46,8 @@
 (defvar pertbot-followed (make-hash-table :test 'equal))
 (defun pertbot-handle-follow (nickuserhost msg)
   (if (string-match "^\\s *,follow\\s +\\(\\S +\\)\\s +\\(\\S +-\\S +*\\)\\s *\n" msg)
-      (let* ((followed (match-string 1 msg))
-	     (dir (match-string 2 msg))
+      (let* ((followed (match-string-no-properties 1 msg))
+	     (dir (match-string-no-properties 2 msg))
 	     (follower (car (split-string nickuserhost "!"))))
 	(if (member dir (pertbot-installed-dirs))
 	    (let ((otherfollowers (unassoc follower
@@ -63,7 +63,7 @@
     (erc-send-message "where DIRECTION is an apertium language pair direction, e.g. es-ca")))
 (defun pertbot-handle-unfollow (nickuserhost msg)
   (if (string-match "^\\s *,unfollow\\s +\\(\\S +\\)\\s *\n" msg)
-      (let* ((followed (match-string 1 msg))
+      (let* ((followed (match-string-no-properties 1 msg))
 	     (follower (car (split-string nickuserhost "!")))
 	     (otherfollowers (unassoc follower
 				      (gethash followed pertbot-followed))))
@@ -72,7 +72,7 @@
 	(puthash followed
 		 otherfollowers
 		 pertbot-followed)
-	(erc-send-message (format "Unfollowing %s for %s" followed follower)))
+	(erc-send-message (format "Unfollowing %s for %s " followed follower)))
     (erc-send-message "Usage: ,unfollow NICK")))
 
 (defun pertbot-handle-follow-match (nickuserhost msg)
