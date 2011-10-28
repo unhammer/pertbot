@@ -2,7 +2,7 @@
 (require 'pertbot-apertium-pairs)
 (require 'pertbot-translate)
 
-(setq erc-keywords '("iso" "help" "commands" "pairs" "translate" "installed"))
+(setq erc-keywords '("iso" "help" "commands" "pairs" "translate" "installed" "follow"))
 
 (defun pertbot-handle-help (msg)
   (erc-send-message "Try ,commands to see a full list of commands. The most useful are probably ,iso and ,pairs."))
@@ -31,13 +31,19 @@
 	 (let* ((key (downcase (match-string 1 msg)))
 		(simple-answer (assoc key pertbot-simple-answers)))
 	   (cond ((equal key "iso") (pertbot-handle-iso msg))
+		 ;; TODO: use the method in `pcomplete-erc-commands'
+		 ;; for auto-creating these functions with
+		 ;; `apropos-internal'
 		 ((equal key "help") (pertbot-handle-help msg))
 		 ((equal key "commands") (pertbot-handle-commands msg))
 		 ((equal key "pairs") (pertbot-handle-pairs msg))
 		 ((equal key "translate") (pertbot-handle-translate msg))
 		 ((equal key "installed") (pertbot-handle-installed msg))
+		 ((equal key "follow") (pertbot-handle-follow nickuserhost msg))
+		 ((equal key "unfollow") (pertbot-handle-unfollow msg))
 		 (simple-answer
 		  (erc-send-message (cdr simple-answer))))))
+	((eq match-type 'pal) (pertbot-handle-follow-match nickuserhost msg))
 	;; guess this matches even if its us saying something :-/
 	;; ((eq match-type 'current-nick) (erc-send-message "hi there"))
 	))
