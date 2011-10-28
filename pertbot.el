@@ -1,10 +1,11 @@
 (require 'iso-639)
 (require 'pertbot-apertium-pairs)
+(require 'pertbot-translate)
 
-(setq erc-keywords '("iso" "help" "commands" "pairs"))
+(setq erc-keywords '("iso" "help" "commands" "pairs" "translate" "installed"))
 
 (defun pertbot-handle-help (msg)
-  (erc-send-message "I've just been born so I don't know many commands. Try ,commands for a full list."))
+  (erc-send-message "Try ,commands to see a full list of commands. The most useful are probably ,iso and ,pairs."))
 
 (defun pertbot-handle-commands (msg)
   (erc-send-message (format "Known commands: %s"
@@ -32,9 +33,11 @@
 	   (cond ((equal key "iso") (pertbot-handle-iso msg))
 		 ((equal key "help") (pertbot-handle-help msg))
 		 ((equal key "commands") (pertbot-handle-commands msg))
+		 ((equal key "pairs") (pertbot-handle-pairs msg))
+		 ((equal key "translate") (pertbot-handle-translate msg))
+		 ((equal key "installed") (pertbot-handle-installed msg))
 		 (simple-answer
-		  (erc-send-message (cdr simple-answer)))
-		 ((equal key "pairs") (pertbot-handle-pairs msg)))))
+		  (erc-send-message (cdr simple-answer))))))
 	;; guess this matches even if its us saying something :-/
 	;; ((eq match-type 'current-nick) (erc-send-message "hi there"))
 	))
