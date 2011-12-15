@@ -1,11 +1,12 @@
 (require 'iso-639)
 (require 'pertbot-apertium-pairs)
 (require 'pertbot-translate)
+(require 'pertbot-seen)
 
-(setq erc-keywords '(",iso" ",help" ",commands" ",pairs" ",translate" ",installed" ",follow" ",unfollow"))
+(setq erc-keywords '(",seen" ",iso" ",help" ",commands" ",pairs" ",translate" ",installed" ",follow" ",unfollow"))
 
 (defun pertbot-handle-help (msg)
-  (erc-send-message "Try ,commands to see a full list of commands. The most useful are probably ,iso and ,pairs."))
+  (erc-send-message "Try ,commands to see a full list of commands. The most useful are probably ,iso and ,pairs and ,seen."))
 
 (defun pertbot-handle-commands (msg)
   (erc-send-message (format "Known commands: %s"
@@ -41,6 +42,7 @@
 		   ((equal key "installed") (pertbot-handle-installed msg))
 		   ((equal key "follow") (pertbot-handle-follow nickuserhost msg))
 		   ((equal key "unfollow") (pertbot-handle-unfollow nickuserhost msg))
+		   ((equal key "seen") (pertbot-handle-seen nickuserhost msg))
 		   (simple-answer
 		    (erc-send-message (cdr simple-answer)))))))
 	((eq match-type 'pal) (pertbot-handle-follow-match nickuserhost msg))
