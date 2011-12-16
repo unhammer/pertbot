@@ -1,7 +1,6 @@
 (defvar pertbot-seen (make-hash-table :test 'equal))
 
 (defun pertbot-see (nick)
-  (message "seeing %s" nick)
   (puthash (erc-downcase nick) (current-time) pertbot-seen))
 
 (defun pertbot-handle-seen (nickuserhost msg)
